@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>S4NTRX — Cybersecurity Portfolio</title>
+<meta name="description" content="S4NTRX — Bastion Host. Cybersecurity researcher, tool builder and educator.">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon-64-v2.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-v2.png">
+<link rel="icon" type="image/png" sizes="512x512" href="skull-512-v2.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#050505;
+    --black-soft:#0b0b0b;
+    --white:#f4f4f4;
+    --white-dim:#b9b9b9;
+    --red:#ff2e2e;
+    --red-soft:rgba(255,46,46,.12);
+    --green:#00e676;
+    --green-soft:rgba(0,230,118,.12);
+    --glass:rgba(255,255,255,.045);
+    --glass-strong:rgba(255,255,255,.07);
+    --stroke:rgba(255,255,255,.10);
+    --stroke-strong:rgba(255,255,255,.18);
+    --mono:'JetBrains Mono',monospace;
+    --sans:'Space Grotesk',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--black);
+    color:var(--white);
+    font-family:var(--sans);
+    overflow-x:hidden;
+    line-height:1.6;
+  }
+  ::selection{background:var(--red);color:var(--black)}
+
+  /* ---------- background grid + glows (no gradients) ---------- */
+  .bg-grid{
+    position:fixed;inset:0;z-index:-2;
+    background-image:
+      repeating-linear-gradient(0deg, rgba(255,255,255,.028) 0 1px, transparent 1px 72px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.028) 0 1px, transparent 1px 72px);
+  }
+  .bg-glow{position:fixed;border-radius:50%;filter:blur(140px);z-index:-1;opacity:.16;pointer-events:none}
+  .bg-glow.red{width:560px;height:560px;background:var(--red);top:-180px;left:-160px}
+  .bg-glow.green{width:520px;height:520px;background:var(--green);bottom:-200px;right:-140px;opacity:.11}
+
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+
+  /* ---------- glass ---------- */
+  .glass{
+    background:var(--glass);
+    border:1px solid var(--stroke);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    border-radius:20px;
+  }
+
+  /* ---------- nav ---------- */
+  nav{
+    position:fixed;top:18px;left:50%;transform:translateX(-50%);
+    z-index:100;display:flex;align-items:center;gap:6px;
+    padding:10px 14px;border-radius:100px;
+    background:rgba(10,10,10,.55);
+    border:1px solid var(--stroke);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+  }
+  nav .brand{display:flex;align-items:center;gap:10px;padding:0 14px 0 6px;font-family:var(--mono);font-weight:700;font-size:15px;letter-spacing:.06em}
+  nav .brand svg{width:22px;height:22px}
+  nav a.nlink{
+    color:var(--white-dim);text-decoration:none;font-size:13.5px;font-weight:500;
+    padding:8px 14px;border-radius:100px;transition:.25s;font-family:var(--mono);
+  }
+  nav a.nlink:hover{color:var(--black);background:var(--white)}
+  nav a.nlink.cta{background:var(--red);color:var(--black);font-weight:700}
+  nav a.nlink.cta:hover{background:var(--white)}
+
+  /* ---------- hero ---------- */
+  .hero{min-height:100vh;display:flex;align-items:center;padding-top:110px;position:relative}
+  .hero-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:44px;align-items:center;width:100%}
+  .status-pill{
+    display:inline-flex;align-items:center;gap:9px;
+    font-family:var(--mono);font-size:12.5px;color:var(--green);
+    border:1px solid rgba(0,230,118,.35);background:var(--green-soft);
+    padding:7px 16px;border-radius:100px;margin-bottom:26px;
+  }
+  .status-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 1.6s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+  h1{
+    font-size:clamp(48px,7.5vw,92px);line-height:.98;font-weight:700;letter-spacing:-.03em;
+  }
+  h1 .red{color:var(--red)}
+  .hero-sub{margin-top:24px;max-width:560px;color:var(--white-dim);font-size:17px}
+  .term{
+    margin-top:34px;font-family:var(--mono);font-size:14px;
+    background:rgba(0,0,0,.55);border:1px solid var(--stroke);
+    border-radius:14px;padding:18px 20px;max-width:560px;
+    backdrop-filter:blur(14px);
+  }
+  .term .bar{display:flex;gap:7px;margin-bottom:12px}
+  .term .bar span{width:11px;height:11px;border-radius:50%}
+  .term .bar span:nth-child(1){background:var(--red)}
+  .term .bar span:nth-child(2){background:var(--white)}
+  .term .bar span:nth-child(3){background:var(--green)}
+  .term .line{color:var(--white-dim)}
+  .term .line .prompt{color:var(--green)}
+  .term .line .cmd{color:var(--white)}
+  .term .caret{display:inline-block;width:9px;height:17px;background:var(--red);vertical-align:-3px;animation:blink 1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+  .hero-actions{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap}
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;text-decoration:none;
+    font-family:var(--mono);font-weight:700;font-size:14px;
+    padding:14px 26px;border-radius:12px;transition:.25s;border:1px solid transparent;
+  }
+  .btn svg{width:17px;height:17px}
+  .btn-red{background:var(--red);color:var(--black)}
+  .btn-red:hover{background:var(--white);transform:translateY(-2px)}
+  .btn-ghost{border-color:var(--stroke-strong);color:var(--white);background:var(--glass);backdrop-filter:blur(12px)}
+  .btn-ghost:hover{border-color:var(--green);color:var(--green);transform:translateY(-2px)}
+
+  /* hero identity card */
+  .id-card{padding:34px 30px;text-align:center;position:relative;overflow:hidden}
+  .id-card .avatar-ring{
+    width:132px;height:132px;margin:0 auto 20px;border-radius:50%;
+    border:2px solid var(--red);padding:5px;
+  }
+  .id-card img{width:100%;height:100%;border-radius:50%;object-fit:cover;filter:grayscale(1) contrast(1.1)}
+  .id-card h3{font-size:22px;letter-spacing:.04em}
+  .id-card .handle{font-family:var(--mono);font-size:13px;color:var(--green);margin-top:4px}
+  .id-card .tagline{margin-top:14px;font-size:14px;color:var(--white-dim)}
+  .id-card .meta{
+    margin-top:22px;padding-top:20px;border-top:1px solid var(--stroke);
+    display:flex;justify-content:space-around;font-family:var(--mono);
+  }
+  .id-card .meta b{display:block;font-size:20px;color:var(--white)}
+  .id-card .meta span{font-size:11px;color:var(--white-dim);text-transform:uppercase;letter-spacing:.08em}
+
+  /* ---------- sections ---------- */
+  section{padding:110px 0}
+  .sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:52px;flex-wrap:wrap}
+  .sec-head .kicker{
+    font-family:var(--mono);font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--red);display:flex;align-items:center;gap:10px;margin-bottom:14px;
+  }
+  .sec-head .kicker::before{content:'';width:34px;height:1px;background:var(--red)}
+  .sec-head h2{font-size:clamp(32px,4.4vw,52px);font-weight:700;letter-spacing:-.02em;line-height:1.05}
+  .sec-head p{max-width:420px;color:var(--white-dim);font-size:15px}
+
+  /* ---------- stats ---------- */
+  .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .stat{padding:30px 26px;transition:.3s;position:relative;overflow:hidden}
+  .stat:hover{transform:translateY(-5px);border-color:var(--stroke-strong);background:var(--glass-strong)}
+  .stat .icon{
+    width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;
+  }
+  .stat .icon svg{width:20px;height:20px}
+  .stat:nth-child(odd) .icon{background:var(--red-soft);color:var(--red)}
+  .stat:nth-child(even) .icon{background:var(--green-soft);color:var(--green)}
+  .stat b{font-size:36px;font-weight:700;letter-spacing:-.02em;display:block;font-family:var(--mono)}
+  .stat span{font-size:13px;color:var(--white-dim);font-family:var(--mono)}
+
+  /* ---------- projects ---------- */
+  .proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .proj{
+    padding:28px 26px;display:flex;flex-direction:column;gap:14px;
+    transition:.3s;position:relative;
+  }
+  .proj:hover{transform:translateY(-6px);border-color:var(--red);background:var(--glass-strong)}
+  .proj .top{display:flex;align-items:center;justify-content:space-between}
+  .proj .folder{color:var(--green)}
+  .proj .folder svg{width:26px;height:26px}
+  .proj .fork-badge{
+    font-family:var(--mono);font-size:10.5px;color:var(--white-dim);
+    border:1px solid var(--stroke);border-radius:100px;padding:3px 10px;letter-spacing:.06em;
+  }
+  .proj h3{font-size:18.5px;font-weight:600;letter-spacing:-.01em}
+  .proj h3 a{color:var(--white);text-decoration:none}
+  .proj h3 a:hover{color:var(--red)}
+  .proj p{font-size:13.5px;color:var(--white-dim);flex:1}
+  .proj .lang{
+    display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);
+    font-size:12px;color:var(--white-dim);
+  }
+  .proj .lang i{width:9px;height:9px;border-radius:50%;display:inline-block}
+  .proj .stats-row{
+    display:flex;gap:18px;padding-top:14px;border-top:1px solid var(--stroke);
+    font-family:var(--mono);font-size:12.5px;color:var(--white-dim);
+  }
+  .proj .stats-row span{display:inline-flex;align-items:center;gap:6px}
+  .proj .stats-row svg{width:14px;height:14px}
+  .proj .stats-row .stars svg{color:var(--red)}
+  .proj .stats-row .forks svg{color:var(--green)}
+
+  /* ---------- skills ---------- */
+  .skills-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .skill{padding:26px 24px;transition:.3s}
+  .skill:hover{transform:translateY(-4px);border-color:var(--green)}
+  .skill .icon{width:40px;height:40px;border-radius:10px;background:var(--red-soft);color:var(--red);display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+  .skill:nth-child(even) .icon{background:var(--green-soft);color:var(--green)}
+  .skill .icon svg{width:19px;height:19px}
+  .skill h4{font-size:15.5px;margin-bottom:8px}
+  .skill p{font-size:12.5px;color:var(--white-dim)}
+  .skill .bar-row{margin-top:16px;height:5px;border-radius:100px;background:rgba(255,255,255,.08);overflow:hidden}
+  .skill .bar-row i{display:block;height:100%;border-radius:100px;background:var(--red);width:0;transition:width 1.2s cubic-bezier(.22,1,.36,1)}
+  .skill:nth-child(even) .bar-row i{background:var(--green)}
+  .skill .pct{font-family:var(--mono);font-size:11px;color:var(--white-dim);margin-top:8px;display:block}
+
+  /* ---------- connect ---------- */
+  .connect-card{padding:64px 60px;text-align:center;position:relative;overflow:hidden}
+  .connect-card h2{font-size:clamp(30px,4vw,48px);letter-spacing:-.02em;font-weight:700}
+  .connect-card h2 em{color:var(--red);font-style:normal}
+  .connect-card p{color:var(--white-dim);max-width:520px;margin:18px auto 34px;font-size:16px}
+  .socials{display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
+  .soc{
+    display:inline-flex;align-items:center;gap:10px;text-decoration:none;
+    font-family:var(--mono);font-size:13.5px;font-weight:500;color:var(--white);
+    border:1px solid var(--stroke-strong);border-radius:100px;padding:12px 22px;
+    background:var(--glass);transition:.25s;backdrop-filter:blur(10px);
+  }
+  .soc svg{width:17px;height:17px}
+  .soc:hover{border-color:var(--red);color:var(--red);transform:translateY(-3px)}
+  .soc.green:hover{border-color:var(--green);color:var(--green)}
+
+  footer{
+    border-top:1px solid var(--stroke);padding:36px 0;margin-top:60px;
+    font-family:var(--mono);font-size:12.5px;color:var(--white-dim);
+  }
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+  footer .skull-mini{display:inline-flex;align-items:center;gap:9px}
+  footer .skull-mini svg{width:18px;height:18px}
+
+  /* scroll reveal */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}
+  .reveal.visible{opacity:1;transform:none}
+
+  /* responsive */
+  @media (max-width:980px){
+    .hero-grid{grid-template-columns:1fr}
+    .stats-grid,.skills-grid{grid-template-columns:repeat(2,1fr)}
+    .proj-grid{grid-template-columns:repeat(2,1fr)}
+    .connect-card{padding:48px 28px}
+  }
+  @media (max-width:620px){
+    .proj-grid{grid-template-columns:1fr}
+    .stats-grid,.skills-grid{grid-template-columns:1fr}
+    nav a.nlink:not(.cta){display:none}
+    section{padding:80px 0}
+  }
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="bg-glow red"></div>
+<div class="bg-glow green"></div>
+<!-- ============ NAV ============ -->
+<nav>
+  <span class="brand">
+    <svg viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="14" fill="#000"/><path d="M32 9 C17.5 9 11 20 11 29.5 C11 37.5 15 42.5 19 45 L22.5 48.5 L29 45.5 L35 45.5 L41.5 48.5 L45 45 C49 42.5 53 37.5 53 29.5 C53 20 46.5 9 32 9 Z" fill="#fff"/><ellipse cx="25.5" cy="28" rx="4.6" ry="5.6" fill="#000"/><ellipse cx="38.5" cy="28" rx="4.6" ry="5.6" fill="#000"/><path d="M32 33.5 L29.2 40.5 L34.8 40.5 Z" fill="#000"/></svg>
+    S4NTRX
+  </span>
+  <a class="nlink" href="#work">Work</a>
+  <a class="nlink" href="#skills">Skills</a>
+  <a class="nlink" href="#connect">Connect</a>
+  <a class="nlink cta" href="https://github.com/s4ntrx" target="_blank" rel="noopener">GitHub</a>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="status-pill"><span class="status-dot"></span>STATUS: ONLINE — BASTION HOST ACTIVE</span>
+      <h1>Defend the <span class="red">perimeter.</span><br>Break the <span class="red">attack.</span></h1>
+      <p class="hero-sub">I am <strong>S4NTRX</strong> — a cybersecurity researcher and builder focused on threat detection, security tooling, and practical education. From dark-web reconnaissance to Windows incident response, I ship tools that make defenders faster.</p>
+      <div class="term">
+        <div class="bar"><span></span><span></span><span></span></div>
+        <div class="line"><span class="prompt">s4ntrx@bastion:~$</span> <span class="cmd" id="typed"></span><span class="caret"></span></div>
+      </div>
+      <div class="hero-actions">
+        <a class="btn btn-red" href="https://github.com/s4ntrx?tab=repositories" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          View Repositories
+        </a>
+        <a class="btn btn-ghost" href="#work">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Explore Work
+        </a>
+      </div>
+    </div>
+
+    <aside class="glass id-card reveal">
+      <div class="avatar-ring">
+        <img src="https://avatars.githubusercontent.com/u/328856308?v=4" alt="S4NTRX avatar">
+      </div>
+      <h3>S4NTRX</h3>
+      <div class="handle">@s4ntrx · BASTION HOST</div>
+      <p class="tagline">Cybersecurity · Threat Research · Tooling · Education</p>
+      <div class="meta">
+        <div><b>235</b><span>Followers</span></div>
+        <div><b>11</b><span>Repos</span></div>
+        <div><b>172</b><span>Stars</span></div>
+      </div>
+    </aside>
+  </div>
+</header>
+
+<!-- ============ STATS ============ -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="stats-grid">
+      <div class="glass stat reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <b>11</b><span>Public Repositories</span>
+      </div>
+      <div class="glass stat reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <b>235</b><span>GitHub Followers</span>
+      </div>
+      <div class="glass stat reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <b>172</b><span>Stars Earned</span>
+      </div>
+      <div class="glass stat reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+        <b>5+</b><span>Security Domains</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROJECTS ============ -->
+<section id="work" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <div class="kicker">Selected Work</div>
+        <h2>Projects from<br>the front line.</h2>
+      </div>
+      <p>Live repositories pulled from the S4NTRX GitHub account — detection guides, education platforms, reconnaissance tooling and offensive-security research.</p>
+    </div>
+
+    <div class="proj-grid">
+      <!-- 1 -->
+      <article class="glass proj reveal">
+        <div class="top">
+          <span class="folder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
+        </div>
+        <h3><a href="https://github.com/s4ntrx/Cybersecurity-Threats-Guide" target="_blank" rel="noopener">Cybersecurity-Threats-Guide</a></h3>
+        <p>Comprehensive educational resource documenting major threats and vulnerabilities — with detection scripts and prevention strategies for each attack class.</p>
+        <span class="lang"><i style="background:var(--green)"></i>Python</span>
+        <div class="stats-row">
+          <span class="stars"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>31</span>
+          <span class="forks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 21V9a9 9 0 0 0 9 9"/></svg>2</span>
+        </div>
+      </article>
+
+      <!-- 2 -->
+      <article class="glass proj reveal">
+        <div class="top">
+          <span class="folder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="2"/><path d="M12 8V4M8 4h8"/><circle cx="9" cy="14" r="1" fill="currentColor"/><circle cx="15" cy="14" r="1" fill="currentColor"/></svg></span>
+          <span class="fork-badge">MIT LICENSE</span>
+        </div>
+        <h3><a href="https://github.com/s4ntrx/S4ntrx-Bot" target="_blank" rel="noopener">S4ntrx-Bot</a></h3>
+        <p>Multi-user cybersecurity education chatbot built with Flask — designed for classroom deployment to train students on security fundamentals interactively.</p>
+        <span class="lang"><i style="background:var(--green)"></i>Python</span>
+        <div class="stats-row">
+          <span class="stars"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>29</span>
+          <span class="forks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 21V9a9 9 0 0 0 9 9"/></svg>1</span>
+        </div>
+      </article>
+
+      <!-- 3 -->
+      <article class="glass proj reveal">
+        <div class="top">
+          <span class="folder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="m7 9 3 3-3 3M12.5 15H17"/></svg></span>
+        </div>
+        <h3><a href="https://github.com/s4ntrx/My-Windows-Cheat-sheet" target="_blank" rel="noopener">My-Windows-Cheat-sheet</a></h3>
+        <p>Essential Windows commands organized into 8 functional categories — covering system administration, security auditing and incident response workflows.</p>
+        <span class="lang"><i style="background:var(--red)"></i>Batch / PowerShell</span>
+        <div class="stats-row">
+          <span class="stars"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>24</span>
+          <span class="forks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 21V9a9 9 0 0 0 9 9"/></svg>2</span>
+        </div>
+      </article>
+
+      <!-- 4 -->
+      <article class="glass proj reveal">
+        <div class="top">
+          <span class="folder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
+          <span class="fork-badge"><a href="https://must-campus.vercel.app" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">LIVE SITE</a></span>
+        </div>
+        <h3><a href="https://github.com/s4ntrx/MUST-Campus" target="_blank" rel="noopener">MUST-Campus</a></h3>
+        <p>Campus web platform for MUST — deployed to production at must-campus.vercel.app with a focus on clean UI and reliable delivery.</p>
+        <span class="lang"><i style="background:var(--red)"></i>HTML</span>
+        <div class="stats-row">
+          <span class="stars"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>23</span>
+          <span class="forks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 21V9a9 9 0 0 0 9 9"/></svg>0</span>
+        </div>
+      </article>
+
+      <!-- 5 -->
+      <article class="glass proj reveal">
+        <div class="top">
+          <span class="folder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
+        </div>
+        <h3><a href="https://github.com/s4ntrx/Dark-Web" target="_blank" rel="noopener">Dark-Web</a></h3>
+        <p>Toolkit for exploring and researching the dark web safely — reconnaissance utilities for analysts studying hidden services and threat actor infrastructure.</p>
+        <span class="lang"><i style="background:var(--white)"></i>Shell / Docs</span>
+        <div class="stats-row">
+          <span class="stars"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>16</span>
+          <span class="forks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 21V9a9 9 0 0 0 9 9"/></svg>0</span>
+        </div>
+      </article>
+
+      <!-- 6 -->
+      <article class="glass proj reveal">
+        <div class="top">
+          <span class="folder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span>
+        </div>
+        <h3><a href="https://github.com/s4ntrx/RenPhisher" target="_blank" rel="noopener">RenPhisher</a></h3>
+        <p>Phishing-awareness research tool that demonstrates how cloned sites harvest credentials — built to educate users on recognizing social-engineering attacks.</p>
+        <span class="lang"><i style="background:var(--red)"></i>HTML</span>
+        <div class="stats-row">
+          <span class="stars"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>6</span>
+          <span class="forks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 21V9a9 9 0 0 0 9 9"/></svg>0</span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+<!-- ============ SKILLS ============ -->
+<section id="skills" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <div class="kicker">Capabilities</div>
+        <h2>Arsenal &amp;<br>expertise.</h2>
+      </div>
+      <p>Skills demonstrated across the S4NTRX repositories — from detection scripting to adversarial simulation and security education.</p>
+    </div>
+
+    <div class="skills-grid">
+      <div class="glass skill reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+        <h4>Python Security Scripting</h4>
+        <p>Detection &amp; prevention scripts for threat classes, automation tooling.</p>
+        <div class="bar-row"><i data-w="92"></i></div>
+        <span class="pct">PROFICIENCY 92%</span>
+      </div>
+      <div class="glass skill reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+        <h4>Windows IR &amp; SysAdmin</h4>
+        <p>Security auditing, incident response, PowerShell &amp; CMD workflows.</p>
+        <div class="bar-row"><i data-w="88"></i></div>
+        <span class="pct">PROFICIENCY 88%</span>
+      </div>
+      <div class="glass skill reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+        <h4>Network Analysis</h4>
+        <p>Traffic interception (mitmproxy), network utilities &amp; reconnaissance.</p>
+        <div class="bar-row"><i data-w="85"></i></div>
+        <span class="pct">PROFICIENCY 85%</span>
+      </div>
+      <div class="glass skill reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <h4>Threat Intelligence</h4>
+        <p>Dark-web exploration, vulnerability research, adversary tradecraft.</p>
+        <div class="bar-row"><i data-w="90"></i></div>
+        <span class="pct">PROFICIENCY 90%</span>
+      </div>
+      <div class="glass skill reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div>
+        <h4>Social Engineering Sim</h4>
+        <p>Phishing campaigns &amp; awareness tooling (RenPhisher) for defense training.</p>
+        <div class="bar-row"><i data-w="80"></i></div>
+        <span class="pct">PROFICIENCY 80%</span>
+      </div>
+      <div class="glass skill reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 0 0-7 7c0 2.4 1.2 4.5 3 5.7V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.3c1.8-1.3 3-3.4 3-5.7a7 7 0 0 0-7-7z"/><path d="M9 22h6"/></svg></div>
+        <h4>Flask App Development</h4>
+        <p>Multi-user security education platforms and chatbot backends.</p>
+        <div class="bar-row"><i data-w="86"></i></div>
+        <span class="pct">PROFICIENCY 86%</span>
+      </div>
+      <div class="glass skill reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+        <h4>Privacy &amp; OPSEC</h4>
+        <p>Privacy-hardening tooling, curated security software stacks (awesome-privacy).</p>
+        <div class="bar-row"><i data-w="84"></i></div>
+        <span class="pct">PROFICIENCY 84%</span>
+      </div>
+      <div class="glass skill reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg></div>
+        <h4>Security Education</h4>
+        <p>Classroom-ready curricula, threat guides and training chatbots.</p>
+        <div class="bar-row"><i data-w="91"></i></div>
+        <span class="pct">PROFICIENCY 91%</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONNECT ============ -->
+<section id="connect" style="padding-top:0">
+  <div class="wrap">
+    <div class="glass connect-card reveal">
+      <h2>Ready to build and defend<br>the future <em>together?</em></h2>
+      <p>Whether it is threat research, defensive tooling or security education — let us connect and create something amazing.</p>
+      <div class="socials">
+        <a class="soc" href="https://github.com/s4ntrx" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          GitHub · @s4ntrx
+        </a>
+        <a class="soc green" href="https://x.com/BdMutant" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          X · @BdMutant
+        </a>
+        <a class="soc" href="https://github.com/s4ntrx?tab=repositories" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          All Repositories
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span class="skull-mini">
+      <svg viewBox="0 0 64 64" fill="none"><path d="M32 9 C17.5 9 11 20 11 29.5 C11 37.5 15 42.5 19 45 L22.5 48.5 L29 45.5 L35 45.5 L41.5 48.5 L45 45 C49 42.5 53 37.5 53 29.5 C53 20 46.5 9 32 9 Z" fill="#f4f4f4"/><ellipse cx="25.5" cy="28" rx="4.6" ry="5.6" fill="#050505"/><ellipse cx="38.5" cy="28" rx="4.6" ry="5.6" fill="#050505"/><path d="M32 33.5 L29.2 40.5 L34.8 40.5 Z" fill="#050505"/></svg>
+      S4NTRX — BASTION HOST
+    </span>
+    <span>&copy; 2026 · Built for defense. No gradients were harmed.</span>
+  </div>
+</footer>
+
+<script>
+  /* terminal typing effect */
+  const commands = [
+    "whoami --verbose",
+    "nmap -sS --top-ports 1000 target.internal",
+    "python3 detect_threats.py --log /var/log/auth.log",
+    "./darkweb_recon --safe-mode",
+    "echo 'trust no packet.'"
+  ];
+  const el = document.getElementById('typed');
+  let ci = 0, ch = 0, deleting = false;
+  function type(){
+    const cmd = commands[ci];
+    el.textContent = cmd.slice(0, ch);
+    let delay = deleting ? 26 : 58;
+    if(!deleting && ch === cmd.length){ delay = 1800; deleting = true; }
+    else if(deleting && ch === 0){ deleting = false; ci = (ci+1) % commands.length; delay = 400; }
+    else ch += deleting ? -1 : 1;
+    setTimeout(type, delay);
+  }
+  type();
+
+  /* scroll reveal */
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        e.target.classList.add('visible');
+        e.target.querySelectorAll('.bar-row i').forEach(b => b.style.width = b.dataset.w + '%');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(r => io.observe(r));
+</script>
+</body>
+</html>
