@@ -1,0 +1,32 @@
+{
+  "updated": "2026-10-06T00:00:00Z",
+  "followers": 235,
+  "repoCount": 11,
+  "stars": 172,
+  "repos": {
+    "Cybersecurity-Threats-Guide": {
+      "stars": 31,
+      "forks": 2
+    },
+    "S4ntrx-Bot": {
+      "stars": 29,
+      "forks": 1
+    },
+    "My-Windows-Cheat-sheet": {
+      "stars": 24,
+      "forks": 2
+    },
+    "MUST-Campus": {
+      "stars": 23,
+      "forks": 0
+    },
+    "Dark-Web": {
+      "stars": 16,
+      "forks": 0
+    },
+    "RenPhisher": {
+      "stars": 6,
+      "forks": 0
+    }
+  }
+}
