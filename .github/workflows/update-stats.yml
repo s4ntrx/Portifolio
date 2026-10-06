@@ -1,0 +1,42 @@
+name: Update portfolio stats
+
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-stats:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch GitHub stats
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_USER: s4ntrx
+        run: |
+          profile=$(curl -sf -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/users/$GITHUB_USER")
+          repos=$(curl -sf -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/users/$GITHUB_USER/repos?per_page=100&type=owner")
+          jq -n --argjson profile "$profile" --argjson repos "$repos" '{
+            updated: (now | todate),
+            followers: $profile.followers,
+            repoCount: $profile.public_repos,
+            stars: ([$repos[].stargazers_count] | add // 0),
+            repos: ($repos | map({key: .name, value: {stars: .stargazers_count, forks: .forks_count}}) | from_entries)
+          }' > stats.json
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add stats.json
+          if git diff --staged --quiet; then
+            echo "No changes"
+          else
+            git commit -m "chore: update portfolio stats"
+            git push
+          fi
