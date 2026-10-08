@@ -1,16 +1,16 @@
 {
-  "updated": "2026-10-07T03:16:43Z",
-  "followers": 506,
-  "repoCount": 16,
-  "stars": 776,
+  "updated": "2026-10-08T03:16:38Z",
+  "followers": 655,
+  "repoCount": 17,
+  "stars": 816,
   "repos": {
     "awesome-privacy": {
       "stars": 4,
       "forks": 0
     },
     "Cybersecurity-Threats-Guide": {
-      "stars": 131,
-      "forks": 2
+      "stars": 156,
+      "forks": 6
     },
     "Dark-Web": {
       "stars": 96,
@@ -25,19 +25,19 @@
       "forks": 0
     },
     "Log-Analyzer": {
-      "stars": 18,
+      "stars": 20,
       "forks": 0
     },
     "mitmproxy": {
-      "stars": 86,
+      "stars": 88,
       "forks": 0
     },
     "MUST-Campus": {
-      "stars": 120,
+      "stars": 123,
       "forks": 0
     },
     "My-Windows-Cheat-sheet": {
-      "stars": 121,
+      "stars": 124,
       "forks": 2
     },
     "networking-toolbox": {
@@ -49,11 +49,11 @@
       "forks": 0
     },
     "Portifolio": {
-      "stars": 20,
+      "stars": 22,
       "forks": 0
     },
     "Random-Password-Generator": {
-      "stars": 0,
+      "stars": 1,
       "forks": 0
     },
     "RenPhisher": {
@@ -65,8 +65,12 @@
       "forks": 0
     },
     "S4ntrx-Bot": {
-      "stars": 126,
+      "stars": 128,
       "forks": 1
+    },
+    "unfollower": {
+      "stars": 0,
+      "forks": 0
     }
   }
 }
