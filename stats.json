@@ -1,19 +1,27 @@
 {
-  "updated": "2026-10-08T03:16:38Z",
-  "followers": 655,
-  "repoCount": 17,
-  "stars": 816,
+  "updated": "2026-10-09T03:16:38Z",
+  "followers": 740,
+  "repoCount": 20,
+  "stars": 841,
   "repos": {
     "awesome-privacy": {
       "stars": 4,
       "forks": 0
     },
+    "captcha_bypass": {
+      "stars": 0,
+      "forks": 0
+    },
     "Cybersecurity-Threats-Guide": {
-      "stars": 156,
-      "forks": 6
+      "stars": 174,
+      "forks": 8
     },
     "Dark-Web": {
-      "stars": 96,
+      "stars": 97,
+      "forks": 0
+    },
+    "deauth-detector": {
+      "stars": 2,
       "forks": 0
     },
     "find-my-stuff": {
@@ -37,7 +45,7 @@
       "forks": 0
     },
     "My-Windows-Cheat-sheet": {
-      "stars": 124,
+      "stars": 125,
       "forks": 2
     },
     "networking-toolbox": {
@@ -48,8 +56,12 @@
       "stars": 18,
       "forks": 0
     },
+    "osint-notes": {
+      "stars": 0,
+      "forks": 0
+    },
     "Portifolio": {
-      "stars": 22,
+      "stars": 23,
       "forks": 0
     },
     "Random-Password-Generator": {
@@ -65,7 +77,7 @@
       "forks": 0
     },
     "S4ntrx-Bot": {
-      "stars": 128,
+      "stars": 130,
       "forks": 1
     },
     "unfollower": {
