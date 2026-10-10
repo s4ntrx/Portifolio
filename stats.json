@@ -1,8 +1,8 @@
 {
-  "updated": "2026-10-09T03:16:38Z",
-  "followers": 740,
+  "updated": "2026-10-10T03:15:43Z",
+  "followers": 785,
   "repoCount": 20,
-  "stars": 841,
+  "stars": 854,
   "repos": {
     "awesome-privacy": {
       "stars": 4,
@@ -13,19 +13,19 @@
       "forks": 0
     },
     "Cybersecurity-Threats-Guide": {
-      "stars": 174,
-      "forks": 8
+      "stars": 179,
+      "forks": 10
     },
     "Dark-Web": {
       "stars": 97,
       "forks": 0
     },
     "deauth-detector": {
-      "stars": 2,
+      "stars": 3,
       "forks": 0
     },
     "find-my-stuff": {
-      "stars": 1,
+      "stars": 2,
       "forks": 0
     },
     "GhostTrack": {
@@ -33,19 +33,19 @@
       "forks": 0
     },
     "Log-Analyzer": {
-      "stars": 20,
+      "stars": 21,
       "forks": 0
     },
     "mitmproxy": {
-      "stars": 88,
+      "stars": 89,
       "forks": 0
     },
     "MUST-Campus": {
-      "stars": 123,
+      "stars": 124,
       "forks": 0
     },
     "My-Windows-Cheat-sheet": {
-      "stars": 125,
+      "stars": 126,
       "forks": 2
     },
     "networking-toolbox": {
@@ -61,7 +61,7 @@
       "forks": 0
     },
     "Portifolio": {
-      "stars": 23,
+      "stars": 24,
       "forks": 0
     },
     "Random-Password-Generator": {
@@ -81,7 +81,7 @@
       "forks": 1
     },
     "unfollower": {
-      "stars": 0,
+      "stars": 1,
       "forks": 0
     }
   }
